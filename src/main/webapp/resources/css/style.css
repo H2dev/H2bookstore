@@ -1,0 +1,330 @@
+html {
+	font-size: 16px;
+/* 	font-family: "Trebuchet", Trebuchet MS, sans-serif; */
+	font-family: Arial, Helvetica, sans-serif;
+	color: #3D3D3D;
+}
+
+*:focus {
+	outline: none;
+}
+
+a.shoppingCartLink {
+	color: #3D3D3D;
+    text-decoration: none;
+}
+
+table.cart {
+	text-align: center;
+	margin-left: auto; 
+	margin-right: auto;
+}
+
+tr.cartHeadings {
+	height: 50px; 
+	font-weight: bold;
+	text-align: center;
+}
+
+tr.cartNormal {
+	height: 30px; 
+	text-align: center;
+}
+
+td {
+	margin: 10px;
+	padding: 10px;
+}
+
+td.italic {
+	font-style: italic;
+}
+
+td.Padding5px {
+	margin: 5x;
+	padding: 5px;
+}
+
+td.totalPrice {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+td.titles {
+	vertical-align: bottom;
+	margin: 3px;
+	padding: 3px;
+}
+
+td.arrows {
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px;
+}
+
+td.Padding8px {
+	padding-right: 8px;
+}
+
+td.noPadding {
+	margin: 0px;
+	padding: 0px;
+}
+
+td.filter {
+	vertical-align: bottom;
+	font-size: 14px;
+	margin: 0x;
+	padding: 0px;
+}
+
+div.cart {
+	font-family: "Georgia", Georgia, Serif;
+	text-align: right;
+	padding-top: 5px;
+	padding-right: 30px;
+	font-size: 18px;
+}
+
+.inputNumber {
+	border: 1px solid #e2e2e2;
+	padding-top: 5px;
+	text-indent: 7px;
+	font-size: 14px;
+	width: 210px;
+	height: 30px;
+	text-align: left;
+}
+
+.inputText {
+	border: 1px solid #e2e2e2;
+	padding-top: 5px;
+	text-indent: 7px;
+	font-size: 14px;
+	width: 210px;
+	height: 30px;
+	text-align: left;
+}
+
+.filterInputNumber {
+	border: 1px solid #e2e2e2;
+	padding-top: 2px;
+	text-indent: 7px;
+	font-size: 14px;
+	width: 145px;
+	height: 30px;
+	text-align: left;
+}
+
+.filterInputText {
+	border: 1px solid #e2e2e2;
+	padding-top: 2px;
+	text-indent: 7px;
+	font-size: 14px;
+	width: 145px;
+	height: 30px;
+	text-align: left;
+}
+
+.header {
+	display: inline-block;
+	font-size: 22px;
+	font-family: "Arial";
+	border-bottom: 2px solid #474d8d;
+	background: #ffffff;
+	box-shadow: 0 25px 25px -25px #662200;
+	vertical-align: middle;
+	position: fixed;
+	width: 100%;
+	margin-top: 5px; 
+	padding-bottom : 5px;
+	text-align: center;
+	line-height: 0px;
+	z-index: 2;
+	padding-bottom: 5px;
+}
+
+.footer {
+	font-size: 11px;
+	font-family: "Arial";
+	padding: 0;
+	background: #ffffff;
+	text-align: center;
+	vertical-align: middle;
+	line-height: normal;
+	border-top: 2px solid #474d8d;
+	box-shadow: 0 -20px 25px -15px #662200;
+	margin: 0;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	line-height: 15px;
+}
+
+.headline {
+	display: inline-block;
+	font-size: 32px;
+	font-family: "Palatino Linotype";
+	font-style: italic;
+	margin-left: 0%;
+	margin-right: 0%;
+	vertical-align: middle;
+	text-align: center;
+	text-shadow: 0px 1px 2px #333;
+	line-height: 0px;
+}
+
+.headline_text {
+	font-size: 32px;
+	font-family: Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD,
+		Georgia, serif;
+	font-style: italic;
+	text-align: center;
+	vertical-align: middle;
+	padding-left: 15px;
+	text-shadow: 0px 1px 2px #333;
+}
+
+.label {
+	font-size: 12px;
+	text-align: right;
+	vertical-align: bottom;
+	color: #c3c3c3;
+	padding-bottom: 11px;
+}
+
+.filterLabel {
+	font-size: 12px;
+	text-align: right;
+	vertical-align: bottom;
+	padding-bottom: 2px;
+}
+
+.italicMessage {
+	font-style: italic;
+	font-size: 12px;
+	font-family: "Georgia", Georgia, Serif;
+}
+
+.tag {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.element {
+	font-size: 28px;
+	width: 52px;
+	text-align: center;
+}
+
+.button2 {
+	font-family: "Georgia", Georgia, Serif;
+	border-top: 0px solid #96d1f8;
+	background: #f8f8f8;
+	height: 36px;
+	font-size: 18px;
+	color: #1a0c5a;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.button {
+	font-family: "Georgia", Georgia, Serif;
+	background-color: #f0eef2;
+	border: none;
+	color: #1a0c5a;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.buttonFilter {
+	font-family: "Georgia", Georgia, Serif;
+	background-color: #f0eef2;
+	border: none;
+	color: #1a0c5a;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	width: 180px;
+	height: 35px;
+}
+
+.link {
+	background: none !important;
+	border: none;
+	color: #6f6f6f;
+	padding: 0 !important;
+	border-bottom: 1px solid #6f6f6f;
+}
+
+.link:hover {
+	background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -ms-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	cursor: pointer;
+}
+
+.button:hover {
+	background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -ms-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	cursor: pointer;
+}
+
+.buttonFilter:hover {
+	background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -ms-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	cursor: pointer;
+}
+
+.biggerGreyLetters {
+	font-size: 24px;
+	color: #8f8f8f;
+}
+
+.fullscreenDiv {
+	width: 100%;
+	height: auto;
+	bottom: 0px;
+	top: 0px;
+	left: 0;
+	position: absolute;
+}
+
+.center {
+	position: absolute;
+	width: 100px;
+	height: 50px;
+	top: 50%;
+	left: 50%;
+	margin-left: -50px;
+	margin-top: -25px;
+}
