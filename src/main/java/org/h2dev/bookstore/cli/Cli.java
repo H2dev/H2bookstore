@@ -5,9 +5,8 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.h2dev.bookstore.exception.H2bookstoreException;
 import org.h2dev.bookstore.manager.BookManager;
@@ -17,6 +16,7 @@ import org.h2dev.bookstore.model.Book;
 import org.h2dev.bookstore.model.BookStatus;
 import org.h2dev.bookstore.model.BuyStatus;
 import org.h2dev.bookstore.model.FilteringCriteria;
+import org.h2dev.bookstore.model.ShoppingCartItem;
 import org.h2dev.bookstore.service.BookstoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -174,10 +174,10 @@ public class Cli {
 	}
 
 	private void handleViewCart() throws SQLException {
-		Map<Book, Integer> booksAndQuantityMapFromCart = bookstoreService.getBooksAndQuantityMapFromCart();
+		List<ShoppingCartItem> itemsInCart = bookstoreService.fetchAllShoppingCartItems();
 		BigDecimal overallPrice = bookstoreService.getOverallPriceFromShoppingCart();
 		CliUtil.printChosenMenuOption(MenuOption.VIEW_CART.getDescription());
-		CliUtil.printShoppingCartItems(booksAndQuantityMapFromCart, overallPrice);
+		CliUtil.printShoppingCartItems(itemsInCart, overallPrice);
 	}
 
 	private void handleRemoveBookFromCart() {
@@ -208,8 +208,8 @@ public class Cli {
 	private void handleBuy() throws SQLException, H2bookstoreException {
 		CliUtil.printChosenMenuOption(MenuOption.BUY_BOOKS.getDescription());
 		System.out.println();
-		Map<Book, Integer> booksAndQuantityMapFromCart = bookstoreService.getBooksAndQuantityMapFromCart();
-		if (booksAndQuantityMapFromCart == null || booksAndQuantityMapFromCart.isEmpty()) {
+		List<ShoppingCartItem> itemsInCart = bookstoreService.fetchAllShoppingCartItems();
+		if (itemsInCart == null || itemsInCart.isEmpty()) {
 			System.out.println("\n! The shopping cart is empty ! ");
 		} else {
 			String totalPrice = CliUtil
@@ -220,8 +220,9 @@ public class Cli {
 			String input = scanner.nextLine();
 			System.out.println();
 			if (input != null && input.toLowerCase().equals("y")) {
-				Set<Book> booksToBuySet = bookstoreService.getBooksAndQuantityMapFromCart().keySet();
-				Book[] booksToBuy = booksToBuySet.toArray(new Book[booksToBuySet.size()]);
+				List<Book> booksInCart = bookstoreService.fetchAllShoppingCartItems().stream()
+						.map(item -> item.getBook()).collect(Collectors.toList());
+				Book[] booksToBuy = booksInCart.toArray(new Book[booksInCart.size()]);
 				int[] statuses = bookstoreService.buy(booksToBuy);
 				int status = statuses[0];
 				if (status == BuyStatus.DOES_NOT_EXIST.getCode()) {

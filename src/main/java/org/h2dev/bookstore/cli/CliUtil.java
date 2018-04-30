@@ -5,10 +5,10 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.h2dev.bookstore.model.Book;
 import org.h2dev.bookstore.model.BookStatus;
+import org.h2dev.bookstore.model.ShoppingCartItem;
 
 public class CliUtil {
 
@@ -38,17 +38,17 @@ public class CliUtil {
 		}
 	}
 
-	public static void printShoppingCartItems(Map<Book, Integer> booksAndQuantityMapFromCart, BigDecimal overallPrice) {
+	public static void printShoppingCartItems(List<ShoppingCartItem> itemsInCart, BigDecimal overallPrice) {
 		System.out.println();
-		if (booksAndQuantityMapFromCart == null || booksAndQuantityMapFromCart.isEmpty()) {
+		if (itemsInCart == null || itemsInCart.isEmpty()) {
 			System.out.println("! No books currently in shopping cart !");
 		} else {
-			for (Map.Entry<Book, Integer> bookAndQuantityEntry : booksAndQuantityMapFromCart.entrySet()) {
-				int id = bookAndQuantityEntry.getKey().getId();
-				String title = bookAndQuantityEntry.getKey().getTitle();
-				String author = bookAndQuantityEntry.getKey().getAuthor();
-				BigDecimal price = bookAndQuantityEntry.getKey().getPrice();
-				int quantity = bookAndQuantityEntry.getValue();
+			for (ShoppingCartItem item : itemsInCart) {
+				int id = item.getBook().getId();
+				String title = item.getBook().getTitle();
+				String author = item.getBook().getAuthor();
+				BigDecimal price = item.getBook().getPrice();
+				int quantity = item.getQuantity();
 				System.out.print("Id: " + id);
 				System.out.print(CliUtil.BOOK_ATTRIBUTES_DELIMITER);
 				System.out.print("Title: " + title);

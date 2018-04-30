@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,11 +15,12 @@ import org.h2dev.bookstore.exception.H2bookstoreException;
 import org.h2dev.bookstore.manager.BookManager;
 import org.h2dev.bookstore.manager.BookStatusManager;
 import org.h2dev.bookstore.manager.GeneralBookstoreManager;
+import org.h2dev.bookstore.manager.ShoppingCartItemManager;
 import org.h2dev.bookstore.model.Book;
 import org.h2dev.bookstore.model.BookStatus;
 import org.h2dev.bookstore.model.BuyStatus;
 import org.h2dev.bookstore.model.FilteringCriteria;
-import org.h2dev.bookstore.model.ShoppingCart;
+import org.h2dev.bookstore.model.ShoppingCartItem;
 import org.h2dev.bookstore.service.interrface.BookList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class BookstoreService implements BookList {
 	@Autowired
 	BookManager bookManager;
 	@Autowired
-	ShoppingCart shoppingCart;
+	ShoppingCartItemManager shoppingCartItemManager;
 
 	public void initDbIfNotAlready() throws H2bookstoreException {
 		generalBookstoreManager.initDB();
@@ -95,20 +95,16 @@ public class BookstoreService implements BookList {
 	}
 
 	public boolean doesStockHaveAllBooksFromShoppingCart() throws SQLException {
-		Map<Book, Integer> booksAndQuantityMap = shoppingCart.getBooksAndQuantityMapFromCart();
-		for (Map.Entry<Book, Integer> bookEntry : booksAndQuantityMap.entrySet()) {
-			Book book = bookEntry.getKey();
-			int quantity = bookEntry.getValue();
+		List<ShoppingCartItem> itemsInCart = shoppingCartItemManager.fetchAllShoppingCartItems();
+		for (ShoppingCartItem item : itemsInCart) {
+			Book book = item.getBook();
+			int quantity = item.getQuantity();
 			BookStatus bookStatus = fetchBookStatusByBookId(book.getId());
 			if (bookStatus.getPiecesInStock() < quantity) {
 				return false;
 			}
 		}
 		return true;
-	}
-
-	public int getTotalNumberOfBookItemsInCart() {
-		return shoppingCart.getTotalNumberOfBookItems();
 	}
 
 	public long getBookStatusTableEntryCount() {
@@ -123,16 +119,20 @@ public class BookstoreService implements BookList {
 		return bookStatusManager.fetchBookStatusByBookId(id);
 	}
 
+	public int getTotalNumberOfBookPiecesInCart() throws SQLException {
+		return shoppingCartItemManager.getTotalNumberOfBookPiecesInCart();
+	}
+
 	public boolean removeFromShoppingCart(int bookId) throws H2bookstoreException {
-		return shoppingCart.removeBookFromCart(bookId);
+		return shoppingCartItemManager.removeBookFromCart(bookId);
 	}
 
 	public BigDecimal getOverallPriceFromShoppingCart() throws SQLException {
-		return shoppingCart.getOverallPrice();
+		return shoppingCartItemManager.getOverallPrice();
 	}
 
-	public Map<Book, Integer> getBooksAndQuantityMapFromCart() throws SQLException {
-		return shoppingCart.getBooksAndQuantityMapFromCart();
+	public List<ShoppingCartItem> fetchAllShoppingCartItems() throws SQLException {
+		return shoppingCartItemManager.fetchAllShoppingCartItems();
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class BookstoreService implements BookList {
 			return false;
 		}
 		try {
-			shoppingCart.addBookToCart(book.getId(), quantity);
+			shoppingCartItemManager.addBookToCart(book.getId(), quantity);
 			return true;
 		} catch (Exception e) {
 			logger.error(e);
@@ -172,10 +172,10 @@ public class BookstoreService implements BookList {
 	}
 
 	private void resolveBooksInCartAsPurchased() throws SQLException, H2bookstoreException {
-		Map<Book, Integer> booksAndQuantityMap = shoppingCart.getBooksAndQuantityMapFromCart();
-		for (Map.Entry<Book, Integer> bookEntry : booksAndQuantityMap.entrySet()) {
-			Book book = bookEntry.getKey();
-			int quantity = bookEntry.getValue();
+		List<ShoppingCartItem> listItemsInCart = fetchAllShoppingCartItems();
+		for (ShoppingCartItem item : listItemsInCart) {
+			Book book = item.getBook();
+			int quantity = item.getQuantity();
 			BookStatus bookStatus = fetchBookStatusByBookId(book.getId());
 			if (bookStatus.getPiecesInStock() < quantity) {
 				throw new H2bookstoreException(

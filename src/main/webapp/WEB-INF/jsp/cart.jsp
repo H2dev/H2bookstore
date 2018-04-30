@@ -6,6 +6,12 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <%@include file="header.jsp"%>
+<%
+response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+response.setHeader("Cache-Control", "no-store");
+response.setHeader("Pragma","no-cache"); //HTTP 1.0
+response.setDateHeader ("Expires", 0);
+%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><spring:message code="mainTitle" /></title>
@@ -37,7 +43,7 @@
 	<c:set var="totalPrice" value="${0}" />
 
 	<c:choose>
-		<c:when test="${not empty booksAndQuantityMap}">
+		<c:when test="${not empty itemsInCart}">
 			<table class="cart">
 				<tr class="cartHeadings">
 					<td class="titles"><spring:message code="titleBook" /></td>
@@ -48,24 +54,24 @@
 				<tr>
 					<td style="height: 2px;"></td>
 				</tr>
-				<c:forEach var="entry" items="${booksAndQuantityMap}">
+				<c:forEach var="item" items="${itemsInCart}">
 					<tr class="cartNormal">
-						<td><c:out value="${entry.key.title}" /></td>
-						<td><c:out value="${entry.key.author}" /></td>
+						<td><c:out value="${item.book.title}" /></td>
+						<td><c:out value="${item.book.author}" /></td>
 						<td><fmt:formatNumber type="currency" pattern="#,###.##"
 								minFractionDigits="2" maxFractionDigits="2"
-								value="${entry.key.price}" /> <c:out value="${currency}" /></td>
-						<td><c:out value="${entry.value}" /></td>
+								value="${item.book.price}" /> <c:out value="${currency}" /></td>
+						<td><c:out value="${item.quantity}" /></td>
 						<td class="noPadding">
 							<form method="POST"
-								action="${pageContext.servletContext.contextPath}/removeFromCart/${entry.key.id}">
+								action="${pageContext.servletContext.contextPath}/removeFromCart/${item.book.id}">
 								<input type="submit" class="button"
 									style="height: 20px; font-size: 14px;" value="${ remove }" />
 							</form>
 						</td>
 					</tr>
 					<c:set var="totalPrice"
-						value="${totalPrice + (entry.key.price * entry.value)}" />
+						value="${totalPrice + (item.book.price * item.quantity)}" />
 				</c:forEach>
 				<tr>
 					<td style="height: 30px;"></td>
@@ -88,7 +94,7 @@
 
 	<div style="text-align: center;">
 		<br> <br>
-		<c:if test="${not empty booksAndQuantityMap}">
+		<c:if test="${not empty itemsInCart}">
 			<form style="display: inline" method="POST"
 				action="${pageContext.servletContext.contextPath}/buy"
 				onsubmit="return confirmDialogBuy()">

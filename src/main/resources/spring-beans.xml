@@ -31,4 +31,11 @@
 			value="org.h2dev.bookstore.model.BookStatus" />
 	</bean>
 
+	<bean id="shoppingCartItemORMLite" class="com.j256.ormlite.spring.DaoFactory"
+		factory-method="createDao">
+		<constructor-arg index="0" ref="connectionSource" />
+		<constructor-arg index="1"
+			value="org.h2dev.bookstore.model.ShoppingCartItem" />
+	</bean>
+
 </beans>

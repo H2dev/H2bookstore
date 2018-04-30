@@ -3,8 +3,8 @@ package org.h2dev.bookstore.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +12,7 @@ import org.h2dev.bookstore.exception.H2bookstoreException;
 import org.h2dev.bookstore.model.Book;
 import org.h2dev.bookstore.model.BuyStatus;
 import org.h2dev.bookstore.model.FilteringCriteria;
+import org.h2dev.bookstore.model.ShoppingCartItem;
 import org.h2dev.bookstore.service.BookstoreService;
 import org.h2dev.bookstore.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ public class MainController {
 		mv.addObject("bookStatusesOverallDbEntries", bookstoreService.getBookStatusTableEntryCount());
 		mv.addObject("book_statuses", bookstoreService.fetchAllBookStatusFilteredPaged(page, filteringCriteria));
 		mv.addObject("filteringCriteria", filteringCriteria);
-		mv.addObject("shoppingCartItems", bookstoreService.getTotalNumberOfBookItemsInCart());
+		mv.addObject("shoppingCartItems", bookstoreService.getTotalNumberOfBookPiecesInCart());
 		mv.setViewName(MAIN_VIEW);
 
 		return mv;
@@ -121,10 +122,10 @@ public class MainController {
 	@RequestMapping(value = "/shoppingCart", method = RequestMethod.GET)
 	public ModelAndView shoppingCart() throws ParseException, SQLException {
 
-		Map<Book, Integer> booksAndQuantityMap = bookstoreService.getBooksAndQuantityMapFromCart();
+		List<ShoppingCartItem> itemsInCart = bookstoreService.fetchAllShoppingCartItems();
 
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("booksAndQuantityMap", booksAndQuantityMap);
+		mv.addObject("itemsInCart", itemsInCart);
 		mv.setViewName(CART_VIEW);
 
 		return mv;
@@ -136,8 +137,9 @@ public class MainController {
 
 		// getting books collection to satisfy 'buy' method in BookList
 		// interface
-		Set<Book> booksToBuySet = bookstoreService.getBooksAndQuantityMapFromCart().keySet();
-		Book[] booksToBuy = booksToBuySet.toArray(new Book[booksToBuySet.size()]);
+		List<Book> booksInCart = bookstoreService.fetchAllShoppingCartItems().stream().map(item -> item.getBook())
+				.collect(Collectors.toList());
+		Book[] booksToBuy = booksInCart.toArray(new Book[booksInCart.size()]);
 
 		int[] statuses = bookstoreService.buy(booksToBuy);
 		String buyStatusMessage = BuyStatus.getMessageByCode(statuses[0]);

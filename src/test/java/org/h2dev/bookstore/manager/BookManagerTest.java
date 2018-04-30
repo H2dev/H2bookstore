@@ -2,10 +2,13 @@ package org.h2dev.bookstore.manager;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import org.h2dev.bookstore.AbstractBookstoreTestCase;
+import org.h2dev.bookstore.exception.H2bookstoreException;
 import org.h2dev.bookstore.model.Book;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -50,7 +53,7 @@ public class BookManagerTest extends AbstractBookstoreTestCase {
 	}
 
 	@Test
-	public void aFetchBookByIdTest() throws SQLException {
+	public void aFetchBookByIdTest() throws SQLException, H2bookstoreException, IOException, ParseException {
 		Book book = bookManager.fetchBookById(5);
 		assertEquals("Unexpected book title", "Random Sales", book.getTitle());
 		assertEquals("Unexpected book author", "Cunning Bastard", book.getAuthor());

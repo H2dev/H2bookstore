@@ -10,10 +10,9 @@ import java.util.Set;
 import org.h2dev.bookstore.exception.H2bookstoreException;
 import org.h2dev.bookstore.model.Book;
 import org.h2dev.bookstore.model.BookStatus;
-import org.h2dev.bookstore.model.ShoppingCart;
+import org.h2dev.bookstore.model.ShoppingCartItem;
 import org.h2dev.bookstore.util.Constants;
 import org.h2dev.bookstore.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.j256.ormlite.dao.Dao;
@@ -21,9 +20,6 @@ import com.j256.ormlite.table.TableUtils;
 
 @Repository("generalBookstoreManager")
 public class GeneralBookstoreManager extends AbstractManager {
-
-	@Autowired
-	ShoppingCart shoppingCart;
 
 	@SuppressWarnings("unchecked")
 	private Dao<Book, Integer> bookDAO = (Dao<Book, Integer>) context.getBean("bookORMLite");
@@ -35,7 +31,7 @@ public class GeneralBookstoreManager extends AbstractManager {
 		try {
 			TableUtils.createTableIfNotExists(cs, BookStatus.class);
 			TableUtils.createTableIfNotExists(cs, Book.class);
-			shoppingCart = new ShoppingCart();
+			TableUtils.createTableIfNotExists(cs, ShoppingCartItem.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("Application failed at creating database table(s).", e);
