@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.h2dev.bookstore.exception.H2bookstoreException;
 import org.h2dev.bookstore.manager.BookManager;
@@ -41,6 +43,7 @@ public class BookstoreService implements BookList {
 	@Autowired
 	ShoppingCartItemManager shoppingCartItemManager;
 
+	@PostConstruct
 	public void initDbIfNotAlready() throws H2bookstoreException {
 		generalBookstoreManager.initDB();
 	}

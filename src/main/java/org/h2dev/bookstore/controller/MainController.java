@@ -41,8 +41,6 @@ public class MainController {
 			@Param("addedSuccessfully") String addedSuccessfully)
 					throws SQLException, ParseException, H2bookstoreException {
 
-		bookstoreService.initDbIfNotAlready();
-
 		if (page == null) {
 			page = (long) 1;
 		}
